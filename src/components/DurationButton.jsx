@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import CONSTS from "../CONSTS";
 
-const DurationButton = () => {
-  const [Values,setValues]=useState()
+const DurationButton = ({sendDataToGraph}) => {
+  // const [Values,setValues]=useState()
   const setSpinner=()=>{
   }
   const getMetricsAll=async()=>{
@@ -10,8 +10,10 @@ const DurationButton = () => {
     const response = await fetch(CONSTS.GET_ALL_METRICS_PASS);
     const myJson = await response.json();
     const values_list=convertDataToGraphFormat(myJson)
-    setValues(values_list)
-    console.log(values_list);
+    console.log('========got the data===========');
+    sendDataToGraph(values_list)
+    // setValues(values_list)
+    // console.log(values_list);
   }
 
 
