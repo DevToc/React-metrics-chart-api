@@ -22,7 +22,7 @@ const Graph = ({ range }) => {
     let max = 0;
     for (const key in jsonData) {
       values_list.push({
-        date: new Date(key),
+        date: new Date(key).toLocaleString(),
         value: parseFloat(jsonData[key].toFixed(4)),
       });
       if (jsonData[key] < min) {
