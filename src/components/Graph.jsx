@@ -12,18 +12,18 @@ import {
 } from "recharts";
 const Graph = ({range}) => {
   const [data,setData]=useState([])
-  
-    const setSpinner=()=>{    }
-    const convertDataToGraphFormat=(jsonData)=>{
-      let values_list=[]
-      for (const key in jsonData) {
-      values_list.push({"date":key,"value":parseFloat(jsonData[key].toFixed(4))})
-      }
-      return values_list
-  
+  const [spinner,setSpinner]=useState(false)
+    
+  const convertDataToGraphFormat=(jsonData)=>{
+    let values_list=[]
+    for (const key in jsonData) {
+    values_list.push({"date":key,"value":parseFloat(jsonData[key].toFixed(4))})
     }
+    return values_list
+
+  }
   const getMetrics=async(range)=>{
-    setSpinner()
+    setSpinner(true)
     let response
     if (range=='all'){response = await fetch(CONSTS.GET_ALL_METRICS_PASS);}
     if (range=='30d'){response = await fetch(CONSTS.GET_30D_METRICS_PASS);}
@@ -32,15 +32,16 @@ const Graph = ({range}) => {
     const myJson = await response.json();
     const values_list=convertDataToGraphFormat(myJson)
     setData(values_list)
+    setSpinner(false)
   }
 
 
   useEffect(()=>{
-    getMetrics(range)},range)
+    getMetrics(range)},[range])
   return (
     <div className="max-w-[561px] mb-8 mx-4 sm:min-w-[500px] ">
       <div className="map-box-wrapper p-2 h-[300px] flex justify-center w-full">
-        <ResponsiveContainer>
+        {!spinner?<ResponsiveContainer>
           <AreaChart
             data={data}
             margin={{
@@ -60,11 +61,20 @@ const Graph = ({range}) => {
               stroke="#000000"
               fill="#8884d8"
             />
+         
           </AreaChart>
-        </ResponsiveContainer>
+        </ResponsiveContainer>:
+        <ClipLoader
+            color={"#000000"}
+        loading={true}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />}
       </div>
       <p className="sm:text-[40px] text-[26px] mt-3 font-extrabold text-[#A0A0A0] text-center">
         current rate : 442.25863
+        
       </p>
     </div>
   );

@@ -25,7 +25,7 @@ const Home = () => {
             <div className="mt-8 w-full flex justify-center">
               <div className="flex w-full flex-col sm:flex-row justify-between max-w-[559px]">
                 <div className="input-form mb-5 sm:mb-0 mx-auto flex items-center">
-                  <label htmlFor="from">CURRENT FORM:</label>
+                  <label htmlFor="from">FROM:</label>
                   <input type="date" className="ml-4" />
                 </div>
                 <div className="input-form mb-5 sm:mb-0 mx-auto flex items-center">
