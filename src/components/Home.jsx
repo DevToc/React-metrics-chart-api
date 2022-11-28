@@ -7,7 +7,7 @@ import Graph from "./Graph";
 import SellBuy from "./SellBuy";
 import Converter from "./Converter";
 const Home = () => {
-  const [Range, setRange]=useState()
+  const [Range, setRange]=useState('all')
   const sendRangeToGraph=(range)=>{
     setRange(range)
 
