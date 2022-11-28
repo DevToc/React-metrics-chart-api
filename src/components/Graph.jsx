@@ -22,7 +22,7 @@ const Graph = ({ range }) => {
     let max = 0;
     for (const key in jsonData) {
       values_list.push({
-        date: new Date(key).toLocaleString(),
+        day: new Date(key).toLocaleString(),
         value: parseFloat(jsonData[key].toFixed(4)),
       });
       if (jsonData[key] < min) {
@@ -75,7 +75,7 @@ const Graph = ({ range }) => {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
+              <XAxis dataKey="day" />
               <YAxis type="number" domain={[Min, Max]} />
               <Tooltip />
               <Area
