@@ -1,4 +1,6 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import CONSTS from "../CONSTS";
+
 // import Map from "../assets/img/map.png";
 import {
   AreaChart,
@@ -9,17 +11,46 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-const Graph = ({values}) => {
-  const data = values
-  // [
-    // { date: '1609066800000', value: 98.4373 },
-    // { date: '1609070400000', value: 99.2545 },
-    // { date: '1609074000000', value: 100.2017 },
-    // { date: '1609077600000', value: 100.2948 },
-    // { date: '1609081200000', value: 100.4199 },
-    // { date: '1609084800000', value: 100.1141 },
-    // { date: '1609088400000', value: 101.0007 },
-    // { date: '1609092000000', value: 101.937 },
+const Graph = ({range}) => {
+  const [data,setData]=useState([])
+  
+    // const [Values,setValues]=useState()
+    const setSpinner=()=>{    }
+    const convertDataToGraphFormat=(jsonData)=>{
+      let values_list=[]
+      for (const key in jsonData) {
+      values_list.push({"date":key,"value":parseFloat(jsonData[key].toFixed(4))})
+      }
+      return values_list
+  
+    }
+  const getMetrics=async(range)=>{
+    setSpinner()
+    let response
+    if (range=='all'){response = await fetch(CONSTS.GET_ALL_METRICS_PASS);}
+    if (range=='30d'){response = await fetch(CONSTS.GET_30D_METRICS_PASS);}
+    
+    const myJson = await response.json();
+    const values_list=convertDataToGraphFormat(myJson)
+    setData(values_list)
+    console.log('========got the data===========');
+    // sendDataToGraph(values_list)
+    // setValues(values_list)
+    // console.log(values_list);
+  }
+
+
+  useEffect(()=>{
+    getMetrics(range)},range)
+  // const data = [
+  //   { date: '1609066800000', value: 98.4373 },
+  //   { date: '1609070400000', value: 99.2545 },
+  //   { date: '1609074000000', value: 100.2017 },
+  //   { date: '1609077600000', value: 100.2948 },
+  //   { date: '1609081200000', value: 100.4199 },
+  //   { date: '1609084800000', value: 100.1141 },
+  //   { date: '1609088400000', value: 101.0007 },
+  //   { date: '1609092000000', value: 101.937 }]
     // { date: '1609095600000', value: 102.779 },
     // { date: '1609099200000', value: 102.2459 },
     // { date: '1609102800000', value: 101.9426 },

@@ -1,5 +1,6 @@
 const METRICS_DOMAIM="http://44.212.66.177"
 const GET_ALL_METRICS_PASS=METRICS_DOMAIM+"/metrics/all"
+const GET_30D_METRICS_PASS=METRICS_DOMAIM+"/metrics/last_30d"
 
 
-export default {GET_ALL_METRICS_PASS}
+export default {GET_ALL_METRICS_PASS,GET_30D_METRICS_PASS}
