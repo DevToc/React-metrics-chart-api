@@ -13,12 +13,20 @@ import {
 const Graph = ({range}) => {
   const [data,setData]=useState([])
   const [spinner,setSpinner]=useState(false)
+  const [Min,setMin]=useState(0)
+  const [Max,setMax]=useState(0)
     
   const convertDataToGraphFormat=(jsonData)=>{
     let values_list=[]
+    let min=9999999999999
+    let max=0
     for (const key in jsonData) {
     values_list.push({"date":key,"value":parseFloat(jsonData[key].toFixed(4))})
+    if (jsonData[key]<min){min=jsonData[key]}
+    if (jsonData[key]>max){max=jsonData[key]}
     }
+    setMin(parseInt(min-150))
+    setMax(parseInt(max+150))
     return values_list
 
   }
@@ -61,7 +69,7 @@ const Graph = ({range}) => {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
-            <YAxis type="number" domain={[80,120]}/>
+            <YAxis type="number" domain={[Min,Max]}/>
             <Tooltip />
             <Area
               type="monotone"
