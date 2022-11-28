@@ -12,10 +12,7 @@ const Home = () => {
     setRange(range)
 
   }
-  // const [Values,setValues]=useState()
-  // const sendDataToGraph=(values)=>{
-  //   setValues(values)    
-  // }
+  
   return (
     <main className="w-full">
       <Container>
