@@ -25,10 +25,18 @@ const Graph = ({range}) => {
   const getMetrics=async(range)=>{
     setSpinner(true)
     let response
-    if (range=='all'){response = await fetch(CONSTS.GET_ALL_METRICS_PASS);}
-    if (range=='30d'){response = await fetch(CONSTS.GET_30D_METRICS_PASS);}
-    if (range=='24h'){response = await fetch(CONSTS.GET_24H_METRICS_PASS);}
-    
+    switch (range) {
+      case 'all':
+          response = await fetch(CONSTS.GET_ALL_METRICS_PASS)
+          break;
+      case '30d':
+          response = await fetch(CONSTS.GET_30D_METRICS_PASS)
+          break;
+          
+      default:
+        response = await fetch(CONSTS.GET_24H_METRICS_PASS)
+        break;
+    }
     const myJson = await response.json();
     const values_list=convertDataToGraphFormat(myJson)
     setData(values_list)
