@@ -12,12 +12,12 @@ import {
 } from "recharts";
 import { RateContext } from "../context/RateContext";
 
-const Graph = ({ range }) => {
+const Graph = ({ range, daterange }) => {
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(false);
   const [Min, setMin] = useState(0);
   const [Max, setMax] = useState(0);
-  // const [currentRate, setCurrentRate] = useState(0);
+  const [allData, setAllData] = useState({});
   const context = useContext(RateContext);
 
   const convertDataToGraphFormat = (jsonData) => {
@@ -27,7 +27,7 @@ const Graph = ({ range }) => {
     for (const key in jsonData) {
       values_list.push({
         day: new Date(parseInt(key)).toLocaleString(),
-        value: parseFloat(jsonData[key].toFixed(4)),
+        value: parseFloat(jsonData[key].toFixed(4))
       });
       if (jsonData[key] < min) {
         min = jsonData[key];
@@ -56,6 +56,9 @@ const Graph = ({ range }) => {
         break;
     }
     const myJson = await response.json();
+    if(range === "all" ){
+      setAllData(myJson)
+    }
     const values_list = convertDataToGraphFormat(myJson);
     setData(values_list);
     getCurrentRate();
@@ -80,6 +83,36 @@ const Graph = ({ range }) => {
     
     return () => clearInterval(intervalId);
   }, [])
+  useEffect(()=>{
+    if(daterange.to===0 && daterange.from===0){
+      return;
+    }
+    else {
+      setSpinner(true)
+      let start = daterange.from;
+      let end = daterange.to===0?new Date().getTime():daterange.to;
+      let values_list = [];
+      let min = 9999999999999;
+      let max = 0;
+      for (const key in allData) {
+        if(key>=start && key<end)
+            values_list.push({
+              day: new Date(parseInt(key)).toLocaleString(),
+              value: parseFloat(allData[key].toFixed(4))
+            });
+        if (allData[key] < min) {
+          min = allData[key];
+        }
+        if (allData[key] > max) {
+          max = allData[key];
+        }
+      }
+      setData(values_list)
+      setMin(parseInt(min - 150));
+      setMax(parseInt(max + 150));
+      setSpinner(false)
+    }
+  },[daterange])
 
   return (
     <div className="max-w-[561px] mb-8 mx-4 sm:min-w-[500px] ">
