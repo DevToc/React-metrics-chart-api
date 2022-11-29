@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import CONSTS from "../CONSTS";
 import ClipLoader from "react-spinners/ClipLoader";
 import {
@@ -10,11 +10,15 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import { RateContext } from "../context/RateContext";
+
 const Graph = ({ range }) => {
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(false);
   const [Min, setMin] = useState(0);
   const [Max, setMax] = useState(0);
+  // const [currentRate, setCurrentRate] = useState(0);
+  const context = useContext(RateContext);
 
   const convertDataToGraphFormat = (jsonData) => {
     let values_list = [];
@@ -22,7 +26,7 @@ const Graph = ({ range }) => {
     let max = 0;
     for (const key in jsonData) {
       values_list.push({
-        day: "1-1",
+        day: new Date(parseInt(key)).toLocaleString(),
         value: parseFloat(jsonData[key].toFixed(4)),
       });
       if (jsonData[key] < min) {
@@ -54,12 +58,29 @@ const Graph = ({ range }) => {
     const myJson = await response.json();
     const values_list = convertDataToGraphFormat(myJson);
     setData(values_list);
+    getCurrentRate();
     setSpinner(false);
   };
 
   useEffect(() => {
     getMetrics(range);
   }, [range]);
+
+  const getCurrentRate = async () => {
+    context.changeRate(true);
+    const response = await fetch(CONSTS.GET_CURRENT_RATE);
+    const data = await response.json();
+    let rate = Object.values(data)[0];
+    rate = parseFloat(rate);
+    context.changeRate(rate);
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(getCurrentRate, 60000);
+    
+    return () => clearInterval(intervalId);
+  }, [])
+
   return (
     <div className="max-w-[561px] mb-8 mx-4 sm:min-w-[500px] ">
       <div className="map-box-wrapper p-2 h-[300px] flex justify-center w-full">
@@ -75,7 +96,15 @@ const Graph = ({ range }) => {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
+              <XAxis
+                dataKey="day"
+                angle={-30}
+
+                style={{
+                  fontSize: "12",
+                }
+                }
+              />
               <YAxis type="number" domain={[Min, Max]} />
               <Tooltip />
               <Area
@@ -97,7 +126,7 @@ const Graph = ({ range }) => {
         )}
       </div>
       <p className="sm:text-[40px] text-[26px] mt-3 font-extrabold text-[#A0A0A0] text-center">
-        current rate : 442.25863
+        current rate: {context.rate.loading ? "loading..." : context.rate.current}
       </p>
     </div>
   );
