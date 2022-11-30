@@ -49,16 +49,17 @@ const SellBuy = () => {
 
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <Dialog.Title as="h1" className="text-lg text-4xl leading-6 text-gray-900 my-4">
-                          <h1>Convert</h1>
+                          <h1>Buy</h1>
                         </Dialog.Title>
                         <hr />
                         <div className="mt-4 text-xl">
                           <div className="flex justify-between my-2 gap-4">
-                            <label htmlFor="" >BitCoin Number:</label>
-                            <input type="text" className="border hover:border-red-200" />
+                            <label htmlFor="" >BTC_ID:</label>
+                            <input type="text" placeholder="bitcoin_wallet_id" className="border hover:border-red-200" />
                           </div>
                           <div className="flex justify-between my-2">
-                            <label htmlFor="" >1BitCoin:</label>
+                          <label htmlFor="" >DPC_ID:</label>
+                          <input type="text" placeholder="dpc_wallet_id" className="border hover:border-red-200" />
                           </div>
                           <div className="flex justify-between my-2" >
                             <label htmlFor="" >1DCP:</label>
