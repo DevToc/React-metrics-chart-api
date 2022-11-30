@@ -54,7 +54,7 @@ const Home = () => {
               <div className="xl:max-w-[350px] max-w-[561px] mb-8 w-full">
                 <SellBuy />
 
-                <p className="text-[26px] mt-3 font-extrabold text-[#A0A0A0] text-center">
+                <p className="text-[20px] mt-3 font-extrabold text-[#A0A0A0] text-center">
                   each bitcoin = {context.rate.loading ? "loading..." : context.rate.bitcoin + " dcp"}
                 </p>
 

@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from "recharts";
 import { RateContext } from "../context/RateContext";
+import { TrendContext } from "../context/TrendContext";
 
 const Graph = ({ range, daterange }) => {
   const [data, setData] = useState([]);
@@ -19,7 +20,7 @@ const Graph = ({ range, daterange }) => {
   const [Max, setMax] = useState(0);
   const [allData, setAllData] = useState({});
   const context = useContext(RateContext);
-
+  const trendContext = useContext(TrendContext);
   const convertDataToGraphFormat = (jsonData) => {
     let values_list = [];
     let min = 9999999999999;
@@ -76,7 +77,9 @@ const Graph = ({ range, daterange }) => {
     let rate = Object.values(data)[0];
     rate = parseFloat(rate);
     context.changeRate(rate);
+    // trendContext.changeTrend()
   }
+
 
   useEffect(() => {
     const intervalId = setInterval(getCurrentRate, 60000);
@@ -88,7 +91,6 @@ const Graph = ({ range, daterange }) => {
       return;
     }
     else {
-      setSpinner(true)
       let start = daterange.from;
       let end = daterange.to===0?new Date().getTime():daterange.to;
       let values_list = [];
@@ -107,10 +109,9 @@ const Graph = ({ range, daterange }) => {
           max = allData[key];
         }
       }
-      setData(values_list)
       setMin(parseInt(min - 150));
       setMax(parseInt(max + 150));
-      setSpinner(false)
+      setData(values_list)
     }
   },[daterange])
 
