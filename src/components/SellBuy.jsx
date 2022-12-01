@@ -1,22 +1,71 @@
 import React, { useState, Fragment, useRef, useContext } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { RateContext } from "../context/RateContext";
+import CONSTS from "../CONSTS";
 
 const SellBuy = () => {
   const [showModal, setShowModal] = useState(false);
 
 
   const [btc, setBtc] = useState("");
-  const [dpc, setDpc] = useState("")
-  const [isEmpty, setEmpty] = useState(false);
+  const [dcp, setDcp] = useState("")
+  const [buy_validate, setBuyValidate] = useState(false);
+  const [payment_validate, setPaymentValidate] = useState(false);
+
+  const [token, setToken] = useState("");
+  const [transaction_id, setTransactionId] = useState("");
+  const [collection_key, setCollectionKey] = useState("");
   const cancelButtonRef = useRef(null);
 
-  const handleBuy = (e) =>{
+  const handleBuy = async (e) =>{
     e.preventDefault();
-    if(btc==="" || dpc === ""){
-      setEmpty(true);
+    if(btc==="" || dcp === ""){
+      setBuyValidate(true);
       return;
     }
+    let data = {
+      "btc_wallet_id":btc,
+      "dcp_wallet_id":dcp
+    }
+    const res = await fetch(CONSTS.GET_TOKEN,{
+      method:"post",
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify(data)
+    })
+    data = await res.json();
+    setToken(data.token)
+    localStorage.setItem('token',data.token);
+
+  }
+
+  const handlePayment = async (e)=>{
+    if(token==="" || transaction_id===""){
+      setPaymentValidate(true);
+      return;
+    }
+    let data = {
+      "token":token,
+      "transaction_id":transaction_id
+    };
+    const res = await fetch(CONSTS.GET_COLLECTION,{
+      method:"post",
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify(data)
+    })
+    console.log(res)
+    if(res.status===500){
+      alert("Internal server error");
+    }
+    if(res.status===411){
+      alert("invalid token");
+    }
+    data = await res.json();
+    setCollectionKey(data.collection_key)
+
   }
 
   return (
@@ -87,17 +136,17 @@ const SellBuy = () => {
                             />
                           </div>
                           <div className="flex justify-between my-2">
-                            <label htmlFor="">DPC_ID:</label>
+                            <label htmlFor="">dcp_ID:</label>
                             <input
                               type="text"
-                              value={dpc}
-                              placeholder="dpc_wallet_id"
+                              value={dcp}
+                              placeholder="dcp_wallet_id"
                               className="border hover:border-red-200"
-                              onChange={(e)=>{setDpc(e.target.value)}}
+                              onChange={(e)=>{setDcp(e.target.value)}}
                             />
                           </div>
                           <div className="flex justify-center">
-                            {isEmpty&&(<p className="text-sm text-red-500">Field must be Filled</p>)}
+                            {buy_validate&&(<p className="text-sm text-red-500">Field must be Filled</p>)}
                           </div>
                           <div className="flex justify-center my-2 w-50">
                             <button
@@ -113,29 +162,51 @@ const SellBuy = () => {
                         <div className="mt-4 text-xl">
                           <div className="flex justify-between my-2 gap-4">
                             <label htmlFor="">Token:</label>
-                            <input
-                              type="textarea"
+                            <textarea
+                         
+                              rows="5"
+                              cols="30"
                               placeholder="Here are token. You can enter directly"
-                              className="border hover:border-red-200"
-                            />
+                              value={token}
+                              onChange={e=>{setToken(e.target.value)}}
+                              className="border hover:border-red-200 text-sm"
+                            >
+                             </textarea>
                           </div>
                           <div className="flex justify-between my-2">
                             <label htmlFor="">TRANSACTION_ID:</label>
                             <input
                               type="text"
+                              value={transaction_id}
+                              onChange={e=>setTransactionId(e.target.value)}
                               placeholder="transaction_id"
                               className="border hover:border-red-200"
                             />
+                          </div>
+                          <div className="flex justify-center">
+                            {payment_validate&&(<p className="text-sm text-red-500">Field must be Filled</p>)}
                           </div>
                           <div className="flex justify-center my-2 w-50">
                             <button
                               type="button"
                               className=" w-full rounded-md border border-transparent bg-blue-600 px-10 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                              onClick={handlePayment}
                             >
                               <p className="text-xl">Payment Report</p>
                             </button>
                           </div>
+                          <div className="flex justify-between my-2">
+                            <label htmlFor="">COLLECTION_KEY:</label>
+                            <input
+                              type="text"
+                              value={collection_key}
+                              onChange={e=>setCollectionKey(e.target.value)}
+                              placeholder="Here is Collection_key"
+                              className="border hover:border-red-200"
+                            />
+                          </div>
                         </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -145,7 +216,7 @@ const SellBuy = () => {
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => {setShowModal(false);
-                    setEmpty(false)}}
+                    setBuyValidate(false)}}
                     ref={cancelButtonRef}
                   >
                     Cancel
