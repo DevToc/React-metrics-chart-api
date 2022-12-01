@@ -9,6 +9,7 @@ function App() {
     <RateProvider>
       <TrendProvider>
       <Home />
+    
       </TrendProvider>
     </RateProvider>
   );

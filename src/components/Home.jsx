@@ -7,6 +7,7 @@ import Graph from "./Graph";
 import SellBuy from "./SellBuy";
 import Converter from "./Converter";
 import { RateContext } from "../context/RateContext";
+import TestA from "./TestA";
 
 const Home = () => {
   const context = useContext(RateContext);

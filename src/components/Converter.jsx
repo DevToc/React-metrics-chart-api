@@ -18,10 +18,10 @@ const Converter = () => {
   }
   const handleCheck = async  (e) => {
     let data = {
-      "token":localStorage.getItem('token'),
+  
       "transaction_id":transacion_id
     };
-    const res = await fetch(CONSTS.GET_COLLECTION,{
+    const res = await fetch(CONSTS.GET_PAYMENT_DATA,{
       method:"post",
       headers:{
         'Content-Type':'application/json'
