@@ -88,11 +88,15 @@ const Converter = () => {
 
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <Dialog.Title as="h1" className="text-lg text-4xl leading-6 text-gray-900 my-4">
-                          <h1>Convert</h1>
+                          <h1>Convert(btc->dcp)</h1>
                         </Dialog.Title>
                         <hr />
                         <div className="mt-4 text-xl">
-                          <div className="flex justify-between my-2 gap-4">
+                        <div className="flex justify-between my-2 gap-1">
+                            <input type="number"  className="border hover:border-red-200"  value={count}  onChange = {e=>setCount(e.target.value)}  />
+                            <input type="number" className="border hover:border-red-200" value={total} disabled/>
+                          </div>
+                          {/* <div className="flex justify-between my-2 gap-4">
                             <label htmlFor="" >BitCoin Number:</label>
                             <input type="number" className="border hover:border-red-200" value={count} onChange = {e=>setCount(e.target.value)} />
                           </div>
@@ -107,7 +111,7 @@ const Converter = () => {
                           <div className="flex justify-between my-2" >
                             <label htmlFor="" >Total:</label>
                             <p>{total}dcp</p>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>

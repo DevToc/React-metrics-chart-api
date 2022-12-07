@@ -307,21 +307,21 @@ const SellBuy = () => {
                        <form onSubmit={handleSell}>
                          <div className="mt-4 text-xl">
                          <div className="flex justify-between my-2">
-                            <label htmlFor="">COLLECTION_KEY:</label>
+                            {/* <label htmlFor="">COLLECTION_KEY:</label> */}
                             <input
                               type="text"
                               value={sell_collection_key}
-                              placeholder="Here is collection key"
+                              placeholder="collection_key"
                               className="border hover:border-red-200"
                               onChange={(e)=>{setSellCollectionKey(e.target.value)}}
                             />
                           </div>
                           <div className="flex justify-between my-2 gap-4">
-                            <label htmlFor="">BTC_ID:</label>
+                            {/* <label htmlFor="">BTC_ID:</label> */}
                             <input
                             value={sell_btc_id}
                               type="text"
-                              placeholder="bitcoin_wallet_id"
+                              placeholder="recipient_btc_wallet_id"
                               className="border hover:border-red-200"
                               onChange={(e)=>{setSellBtcId(e.target.value)}}
                             />
@@ -336,7 +336,7 @@ const SellBuy = () => {
                               className=" w-full rounded-md border border-transparent bg-blue-600 px-10 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                             
                             >
-                              <p className="text-xl">SELL</p>
+                              <p className="text-xl">Make the sale</p>
                             </button>
                           </div>
                         </div>
