@@ -5,6 +5,8 @@ import CONSTS from "../CONSTS";
 
 const Converter = () => {
   const context = useContext(RateContext);
+  const [count, setCount] = useState(0)
+  const [total, setTotal] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showPrevModal, setShowPrevModal] = useState(false)
   const cancelButtonRef = useRef(null)
@@ -14,7 +16,8 @@ const Converter = () => {
   const [collection_key,setCollectionKey] = useState("")
 
   const handleConvert = (e) => {
-    alert('convert');
+
+    setTotal(context.rate.bitcoin * count)
   }
   const handleCheck = async  (e) => {
     let data = {
@@ -91,7 +94,7 @@ const Converter = () => {
                         <div className="mt-4 text-xl">
                           <div className="flex justify-between my-2 gap-4">
                             <label htmlFor="" >BitCoin Number:</label>
-                            <input type="text" className="border hover:border-red-200" />
+                            <input type="number" className="border hover:border-red-200" value={count} onChange = {e=>setCount(e.target.value)} />
                           </div>
                           <div className="flex justify-between my-2">
                             <label htmlFor="" >1BitCoin:</label>
@@ -100,6 +103,10 @@ const Converter = () => {
                           <div className="flex justify-between my-2" >
                             <label htmlFor="" >1DCP:</label>
                             <p>{context.rate.loading ? "loading..." : context.rate.dcp + " bitcoin"}</p>
+                          </div>
+                          <div className="flex justify-between my-2" >
+                            <label htmlFor="" >Total:</label>
+                            <p>{total}dcp</p>
                           </div>
                         </div>
                       </div>
@@ -124,7 +131,7 @@ const Converter = () => {
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
-            </div>
+            </div>``
           </div>
         </Dialog>
       </Transition.Root>
