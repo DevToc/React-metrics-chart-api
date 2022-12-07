@@ -306,7 +306,16 @@ const SellBuy = () => {
                         <hr />
                        <form onSubmit={handleSell}>
                          <div className="mt-4 text-xl">
-                         <div className="flex justify-between my-2">
+                         <div className="max-w-md px-2">
+                        <p className="text-left break-words ">In order to make a sale of DCP
+You need to first make the sale from your wallet, and get a collection key
+Make sure that the sale has been received, and that the key is present in overview.cash
+and then enter here the collection key and the identification of the BTC wallet to which you wish to receive the payment
+Please note that beneficiaries should only be set for the wallet ID: ccd67f48-ea77-4038-9c40-2305898a7e68<br/><span>('beneficiaries_sha': '4bc9fb333319bad3b65d797506b4b556420784c77ea48ec4bee1a889727638ff')
+</span><br/>
+Minimum to transfer 1 DCP, each sale involves a commission of 1 DCP + 5% of the remaining</p>
+                          </div>
+                         <div className="flex justify-center my-2">
                             {/* <label htmlFor="">COLLECTION_KEY:</label> */}
                             <input
                               type="text"
@@ -316,7 +325,7 @@ const SellBuy = () => {
                               onChange={(e)=>{setSellCollectionKey(e.target.value)}}
                             />
                           </div>
-                          <div className="flex justify-between my-2 gap-4">
+                          <div className="flex justify-center my-2 gap-4">
                             {/* <label htmlFor="">BTC_ID:</label> */}
                             <input
                             value={sell_btc_id}
