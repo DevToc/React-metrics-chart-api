@@ -9,12 +9,19 @@ const SellBuy = () => {
 
   const [btc, setBtc] = useState("");
   const [dcp, setDcp] = useState("")
+
   const [buy_validate, setBuyValidate] = useState(false);
+  const [sell_validate, setSellValidate] = useState(false);
   const [payment_validate, setPaymentValidate] = useState(false);
 
   const [token, setToken] = useState("");
   const [transaction_id, setTransactionId] = useState("");
   const [collection_key, setCollectionKey] = useState("");
+
+  const [sell_collection_key, setSellCollectionKey] = useState("");
+  const [sell_btc_id,setSellBtcId] = useState("")
+  const [sellStatus,setSellStatus] = useState("")
+
   const cancelButtonRef = useRef(null);
 
   const handleBuy = async (e) =>{
@@ -41,6 +48,32 @@ const SellBuy = () => {
   }
   const handleSell = async (e) => {
     e.preventDefault();
+    if(sell_collection_key==="" || sell_btc_id===""){
+      setSellValidate(true);
+      return;
+    }
+    let data = {
+      "collection_key":sell_collection_key,
+      "recipient_btc_wallet_id":sell_btc_id
+    }
+    const res = await fetch(CONSTS.SELL_DCP,{
+      method:"post",
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify(data)
+    })
+   
+    if(res.status===200){
+      setSellStatus("Successfully processed!");
+      setShowSellModal(false)
+      return;
+    }
+    else {
+      setSellStatus("Error Occured!!");
+      return;
+    }
+
   }
   const handlePayment = async (e)=>{
     if(token==="" || transaction_id===""){
@@ -273,28 +306,29 @@ const SellBuy = () => {
                         <hr />
                        <form onSubmit={handleSell}>
                          <div className="mt-4 text-xl">
+                         <div className="flex justify-between my-2">
+                            <label htmlFor="">COLLECTION_KEY:</label>
+                            <input
+                              type="text"
+                              value={sell_collection_key}
+                              placeholder="Here is collection key"
+                              className="border hover:border-red-200"
+                              onChange={(e)=>{setSellCollectionKey(e.target.value)}}
+                            />
+                          </div>
                           <div className="flex justify-between my-2 gap-4">
                             <label htmlFor="">BTC_ID:</label>
                             <input
-                            value={btc}
+                            value={sell_btc_id}
                               type="text"
                               placeholder="bitcoin_wallet_id"
                               className="border hover:border-red-200"
-                              onChange={(e)=>{setBtc(e.target.value)}}
+                              onChange={(e)=>{setSellBtcId(e.target.value)}}
                             />
                           </div>
-                          <div className="flex justify-between my-2">
-                            <label htmlFor="">dcp_ID:</label>
-                            <input
-                              type="text"
-                              value={dcp}
-                              placeholder="dcp_wallet_id"
-                              className="border hover:border-red-200"
-                              onChange={(e)=>{setDcp(e.target.value)}}
-                            />
-                          </div>
+                         
                           <div className="flex justify-center">
-                            {buy_validate&&(<p className="text-sm text-red-500">Field must be Filled</p>)}
+                            {sell_validate&&(<p className="text-sm text-red-500">Field must be Filled</p>)}
                           </div>
                           <div className="flex justify-center my-2 w-50">
                             <button
@@ -302,57 +336,15 @@ const SellBuy = () => {
                               className=" w-full rounded-md border border-transparent bg-blue-600 px-10 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                             
                             >
-                              <p className="text-xl">Buy</p>
+                              <p className="text-xl">SELL</p>
                             </button>
                           </div>
                         </div>
                        </form>
                         <div className="mt-4 text-xl">
                           <div className="flex justify-between my-2 gap-4">
-                            <label htmlFor="">Token:</label>
-                            <textarea
-                         
-                              rows="5"
-                              cols="30"
-                              placeholder="Here are token. You can enter directly"
-                              value={token}
-                              onChange={e=>{setToken(e.target.value)}}
-                              className="border hover:border-red-200 text-sm"
-                            >
-                             </textarea>
-                          </div>
-                          <div className="flex justify-between my-2">
-                            <label htmlFor="">TRANSACTION_ID:</label>
-                            <input
-                              type="text"
-                              value={transaction_id}
-                              onChange={e=>setTransactionId(e.target.value)}
-                              placeholder="transaction_id"
-                              className="border hover:border-red-200"
-                            />
-                          </div>
-                          <div className="flex justify-center">
-                            {payment_validate&&(<p className="text-sm text-red-500">Field must be Filled</p>)}
-                          </div>
-                          <div className="flex justify-center my-2 w-50">
-                            <button
-                              type="button"
-                              className=" w-full rounded-md border border-transparent bg-blue-600 px-10 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                              onClick={handlePayment}
-                            >
-                              <p className="text-xl">Payment Report</p>
-                            </button>
-                          </div>
-                          <div className="flex justify-between my-2">
-                            <label htmlFor="">COLLECTION_KEY:</label>
-                            <input
-                              type="text"
-                              value={collection_key}
-                              onChange={e=>setCollectionKey(e.target.value)}
-                              placeholder="Here is Collection_key"
-                              className="border hover:border-red-200"
-                            />
-                          </div>
+                            <p>{sellStatus}</p>
+                        </div>
                         </div>
                         
                       </div>

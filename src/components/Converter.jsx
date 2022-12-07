@@ -167,7 +167,7 @@ const Converter = () => {
                           <div className="flex justify-between my-2 gap-4">
                             <label htmlFor="" >TRANSACTION_ID:</label>
                             <input type="text" className="border hover:border-red-200" placeholder="Here is transacion_id" 
-                              value={transacion_id}
+                              value={transacion_id } onChange={(e)=>setTransactionId(e.target.value)}
                             />
                           </div>
                           <div className="bg-gray-50 px-4 py-3 sm:flex justify-center sm:px-6">
