@@ -21,6 +21,7 @@ const SellBuy = () => {
   const [sell_collection_key, setSellCollectionKey] = useState("");
   const [sell_btc_id, setSellBtcId] = useState("");
   const [sellStatus, setSellStatus] = useState("");
+  const [buyStatus, setBuyStatus] = useState("");
 
   const cancelButtonRef = useRef(null);
 
@@ -41,6 +42,22 @@ const SellBuy = () => {
       },
       body: JSON.stringify(data),
     });
+    if(res.status!==200){
+      setBuyStatus("Error occurred")
+       let id = setInterval(() => {
+          setBuyStatus("");
+          clearInterval(id)
+      }, 1000);
+      return;
+    }
+    if(res.status===200){
+      
+      setBuyStatus("Successfully proceed");
+      let id = setInterval(() => {
+        setBuyStatus("");
+        clearInterval(id)
+    }, 1000);
+    }
     data = await res.json();
     setToken(data.token);
     localStorage.setItem("token", data.token);
@@ -268,8 +285,14 @@ const SellBuy = () => {
                       
                           </div>
                         </div>
+                        <div className="mt-4 text-xl">
+                          <div className="flex justify-between my-2 gap-4">
+                            <label htmlFor="status">status:</label> <p>{buyStatus}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  
                   </div>
                   <div className="bg-gray-50 px-4 py-3 sm:flex sm:px-6 justify-end">
                     {" "}
@@ -386,6 +409,11 @@ const SellBuy = () => {
                                 </p>
                               )}
                             </div>
+                            <div className="mt-4 text-xl">
+                          <div className="flex justify-between my-2 gap-4">
+                            <label htmlFor="status">status:</label> <p>{sellStatus}</p>
+                          </div>
+                        </div>
                             <div className="flex justify-end my-2 w-50">
                               <button
                                 type="submit"
@@ -408,11 +436,7 @@ const SellBuy = () => {
                             </div>
                           </div>
                         </form>
-                        <div className="mt-4 text-xl">
-                          <div className="flex justify-between my-2 gap-4">
-                            <p>{sellStatus}</p>
-                          </div>
-                        </div>
+                       
                       </div>
                     </div>
                   </div>
