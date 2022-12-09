@@ -242,24 +242,30 @@ const SellBuy = () => {
                           </div>
                           <div className="flex justify-between my-2">
                             <label htmlFor="">COLLECTION_KEY:</label>
-                            <textarea
+                            {/* <textarea
                               name=""
                               id=""
                               cols="30"
-                              rows="4"
+                              rows="8"
                               value={collection_key}
-                              // onChange={e=>setCollectionKey(e.target.value)}
+                              disabled
+                              placeholder="Here is Collection_key"
+                              className="border hover:border-red-200"
+                            ></textarea> */}
+                      
+                          </div>
+                          <div className="flex justify-center my-2">
+                            <textarea
+                              name=""
+                              id=""
+                              cols="40"
+                              rows="8"
+                              value={collection_key}
                               disabled
                               placeholder="Here is Collection_key"
                               className="border hover:border-red-200"
                             ></textarea>
-                            {/* <input
-                              type="text"
-                              value={collection_key}
-                              onChange={e=>setCollectionKey(e.target.value)}
-                              placeholder="Here is Collection_key"
-                              className="border hover:border-red-200"
-                            /> */}
+                      
                           </div>
                         </div>
                       </div>
@@ -352,19 +358,16 @@ const SellBuy = () => {
                               </p>
                             </div>
                             <div className="flex justify-center my-2">
-                              {/* <label htmlFor="">COLLECTION_KEY:</label> */}
                               <textarea
-                              
-                                rows={4}
+                                cols={40}
+                                rows={6}
                                 type="text"
                                 value={sell_collection_key}
                                 placeholder="Here is Collection Key"
-                                className="border hover:border-red-200 border-none"
-                                // onChange={(e)=>{setSellCollectionKey(e.target.value)}
+                                className="border hover:border-red-200"
                               />
                             </div>
-                            <div className="flex justify-center my-2 gap-4">
-                              {/* <label htmlFor="">BTC_ID:</label> */}
+                            <div className="flex justify-center my-2">
                               <input
                                 value={sell_btc_id}
                                 type="text"
@@ -413,15 +416,7 @@ const SellBuy = () => {
                       </div>
                     </div>
                   </div>
-                  {/* <div className="bg-gray-50 px-4 py-3 sm:flex sm:px-6 justify-end"> <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => {setShowSellModal(false);
-                    setSellValidate(false)}}
-                    ref={cancelButtonRef}
-                  >
-                    Cancel
-                  </button></div> */}
+                 
                 </Dialog.Panel>
               </Transition.Child>
             </div>

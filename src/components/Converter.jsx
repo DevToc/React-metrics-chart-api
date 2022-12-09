@@ -96,22 +96,7 @@ const Converter = () => {
                             <input type="number"  className="border hover:border-red-200"  value={count}  onChange = {e=>setCount(e.target.value)}  />
                             <input type="number" className="border hover:border-red-200" value={total} disabled/>
                           </div>
-                          {/* <div className="flex justify-between my-2 gap-4">
-                            <label htmlFor="" >BitCoin Number:</label>
-                            <input type="number" className="border hover:border-red-200" value={count} onChange = {e=>setCount(e.target.value)} />
-                          </div>
-                          <div className="flex justify-between my-2">
-                            <label htmlFor="" >1BitCoin:</label>
-                            <p>{context.rate.loading ? "loading..." : context.rate.bitcoin + " dcp"}</p>
-                          </div>
-                          <div className="flex justify-between my-2" >
-                            <label htmlFor="" >1DCP:</label>
-                            <p>{context.rate.loading ? "loading..." : context.rate.dcp + " bitcoin"}</p>
-                          </div>
-                          <div className="flex justify-between my-2" >
-                            <label htmlFor="" >Total:</label>
-                            <p>{total}dcp</p>
-                          </div> */}
+                       
                         </div>
                       </div>
                     </div>
@@ -193,20 +178,25 @@ const Converter = () => {
                   </div>
                   <div className="flex justify-between my-2">
                             <label htmlFor="">COLLECTION_KEY:</label>
-                            <input
-                              type="text"
+                       
+                          </div>
+
+
+                          <div className="flex justify-center my-2">
+                            <textarea
+                              rows={8}
+                              cols={40}
                               value={collection_key}
-                              onChange={e=>setCollectionKey(e.target.value)}
                               placeholder="Here is Collection_key"
                               className="border hover:border-red-200"
                             />
                           </div>
+
                         </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <button
+                   <div className="flex justify-end">
+                   <button
                       type="button"
                       className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                       onClick={() => setShowPrevModal(false)}
@@ -214,6 +204,10 @@ const Converter = () => {
                     >
                       Cancel
                     </button>
+                   </div>
+                  </div>
+                  
+              
                 </Dialog.Panel>
               </Transition.Child>
             </div>
