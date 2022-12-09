@@ -8,7 +8,7 @@ const SellBuy = () => {
   const [showSellModal, setShowSellModal] = useState(false);
 
   const [btc, setBtc] = useState("");
-  const [dcp, setDcp] = useState("")
+  const [dcp, setDcp] = useState("");
 
   const [buy_validate, setBuyValidate] = useState(false);
   const [sell_validate, setSellValidate] = useState(false);
@@ -19,89 +19,85 @@ const SellBuy = () => {
   const [collection_key, setCollectionKey] = useState("");
 
   const [sell_collection_key, setSellCollectionKey] = useState("");
-  const [sell_btc_id,setSellBtcId] = useState("")
-  const [sellStatus,setSellStatus] = useState("")
+  const [sell_btc_id, setSellBtcId] = useState("");
+  const [sellStatus, setSellStatus] = useState("");
 
   const cancelButtonRef = useRef(null);
 
-  const handleBuy = async (e) =>{
+  const handleBuy = async (e) => {
     e.preventDefault();
-    if(btc==="" || dcp === ""){
+    if (btc === "" || dcp === "") {
       setBuyValidate(true);
       return;
     }
     let data = {
-      "btc_wallet_id":btc,
-      "dcp_wallet_id":dcp
-    }
-    const res = await fetch(CONSTS.GET_TOKEN,{
-      method:"post",
-      headers:{
-        'Content-Type':'application/json'
+      btc_wallet_id: btc,
+      dcp_wallet_id: dcp,
+    };
+    const res = await fetch(CONSTS.GET_TOKEN, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify(data)
-    })
+      body: JSON.stringify(data),
+    });
     data = await res.json();
-    setToken(data.token)
-    localStorage.setItem('token',data.token);
-
-  }
+    setToken(data.token);
+    localStorage.setItem("token", data.token);
+  };
   const handleSell = async (e) => {
     e.preventDefault();
-    if(sell_collection_key==="" || sell_btc_id===""){
+    if (sell_collection_key === "" || sell_btc_id === "") {
       setSellValidate(true);
       return;
     }
     let data = {
-      "collection_key":sell_collection_key,
-      "recipient_btc_wallet_id":sell_btc_id
-    }
-    const res = await fetch(CONSTS.SELL_DCP,{
-      method:"post",
-      headers:{
-        'Content-Type':'application/json'
+      collection_key: sell_collection_key,
+      recipient_btc_wallet_id: sell_btc_id,
+    };
+    const res = await fetch(CONSTS.SELL_DCP, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify(data)
-    })
-   
-    if(res.status===200){
+      body: JSON.stringify(data),
+    });
+
+    if (res.status === 200) {
       setSellStatus("Successfully processed!");
-      setShowSellModal(false)
+      setShowSellModal(false);
       return;
-    }
-    else {
+    } else {
       setSellStatus("Error Occured!!");
       return;
     }
-
-  }
-  const handlePayment = async (e)=>{
-    if(token==="" || transaction_id===""){
+  };
+  const handlePayment = async (e) => {
+    if (token === "" || transaction_id === "") {
       setPaymentValidate(true);
       return;
     }
     let data = {
-      "token":token,
-      "transaction_id":transaction_id
+      token: token,
+      transaction_id: transaction_id,
     };
-    const res = await fetch(CONSTS.GET_COLLECTION,{
-      method:"post",
-      headers:{
-        'Content-Type':'application/json'
+    const res = await fetch(CONSTS.GET_COLLECTION, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify(data)
-    })
-    console.log(res)
-    if(res.status===500){
+      body: JSON.stringify(data),
+    });
+    console.log(res);
+    if (res.status === 500) {
       alert("Internal server error");
     }
-    if(res.status===411){
+    if (res.status === 411) {
       alert("invalid token");
     }
     data = await res.json();
-    setCollectionKey(data.collection_key)
-
-  }
+    setCollectionKey(data.collection_key);
+  };
 
   return (
     <div className="w-full flex justify-between items-center">
@@ -113,7 +109,10 @@ const SellBuy = () => {
       >
         BUY
       </button>
-      <button className="buy-sell-btn ml-1 sm:px-[40px] text-[#0066ff] w-full bg-transparent py-3" onClick={()=>setShowSellModal(true)}>
+      <button
+        className="buy-sell-btn ml-1 sm:px-[40px] text-[#0066ff] w-full bg-transparent py-3"
+        onClick={() => setShowSellModal(true)}
+      >
         SELL
       </button>
 
@@ -158,68 +157,79 @@ const SellBuy = () => {
                           <h1>Buy DCP</h1>
                         </Dialog.Title>
                         <hr />
-                       <form onSubmit={handleBuy}>
-                         <div className="mt-4 text-xl">
-                          <div className="flex justify-between my-2 gap-4">
-                            <label htmlFor="">BTC_ID:</label>
-                            <input
-                            value={btc}
-                              type="text"
-                              placeholder="bitcoin_wallet_id"
-                              className="border hover:border-red-200"
-                              onChange={(e)=>{setBtc(e.target.value)}}
-                            />
+                        <form onSubmit={handleBuy}>
+                          <div className="mt-4 text-xl">
+                            <div className="flex justify-between my-2 gap-4">
+                              <label htmlFor="">BTC_ID:</label>
+                              <input
+                                value={btc}
+                                type="text"
+                                placeholder="bitcoin_wallet_id"
+                                className="border hover:border-red-200"
+                                onChange={(e) => {
+                                  setBtc(e.target.value);
+                                }}
+                              />
+                            </div>
+                            <div className="flex justify-between my-2">
+                              <label htmlFor="">dcp_ID:</label>
+                              <input
+                                type="text"
+                                value={dcp}
+                                placeholder="dcp_wallet_id"
+                                className="border hover:border-red-200"
+                                onChange={(e) => {
+                                  setDcp(e.target.value);
+                                }}
+                              />
+                            </div>
+                            <div className="flex justify-center">
+                              {buy_validate && (
+                                <p className="text-sm text-red-500">
+                                  Field must be Filled
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex justify-center my-2 w-50">
+                              <button
+                                type="submit"
+                                className=" w-full rounded-md border border-transparent bg-blue-600 px-10 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                              >
+                                <p className="text-xl">Buy</p>
+                              </button>
+                            </div>
                           </div>
-                          <div className="flex justify-between my-2">
-                            <label htmlFor="">dcp_ID:</label>
-                            <input
-                              type="text"
-                              value={dcp}
-                              placeholder="dcp_wallet_id"
-                              className="border hover:border-red-200"
-                              onChange={(e)=>{setDcp(e.target.value)}}
-                            />
-                          </div>
-                          <div className="flex justify-center">
-                            {buy_validate&&(<p className="text-sm text-red-500">Field must be Filled</p>)}
-                          </div>
-                          <div className="flex justify-center my-2 w-50">
-                            <button
-                              type="submit"
-                              className=" w-full rounded-md border border-transparent bg-blue-600 px-10 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                            
-                            >
-                              <p className="text-xl">Buy</p>
-                            </button>
-                          </div>
-                        </div>
-                       </form>
+                        </form>
                         <div className="mt-4 text-xl">
                           <div className="flex justify-between my-2 gap-4">
                             <label htmlFor="">Token:</label>
                             <textarea
-                         
                               rows="5"
                               cols="30"
                               placeholder="Here are token. You can enter directly"
                               value={token}
-                              onChange={e=>{setToken(e.target.value)}}
+                              onChange={(e) => {
+                                setToken(e.target.value);
+                              }}
                               className="border hover:border-red-200 text-sm"
-                            >
-                             </textarea>
+                            ></textarea>
                           </div>
                           <div className="flex justify-between my-2">
                             <label htmlFor="">TRANSACTION_ID:</label>
                             <input
                               type="text"
                               value={transaction_id}
-                              onChange={e=>setTransactionId(e.target.value)}
+                              onChange={(e) => setTransactionId(e.target.value)}
                               placeholder="transaction_id"
                               className="border hover:border-red-200"
                             />
                           </div>
                           <div className="flex justify-center">
-                            {payment_validate&&(<p className="text-sm text-red-500">Field must be Filled</p>)}
+                            {payment_validate && (
+                              <p className="text-sm text-red-500">
+                                Field must be Filled
+                              </p>
+                            )}
                           </div>
                           <div className="flex justify-center my-2 w-50">
                             <button
@@ -232,30 +242,43 @@ const SellBuy = () => {
                           </div>
                           <div className="flex justify-between my-2">
                             <label htmlFor="">COLLECTION_KEY:</label>
-                            <input
+                            <textarea
+                              name=""
+                              id=""
+                              cols="30"
+                              rows="4"
+                              value={collection_key}
+                              // onChange={e=>setCollectionKey(e.target.value)}
+                              disabled
+                              placeholder="Here is Collection_key"
+                              className="border hover:border-red-200"
+                            ></textarea>
+                            {/* <input
                               type="text"
                               value={collection_key}
                               onChange={e=>setCollectionKey(e.target.value)}
                               placeholder="Here is Collection_key"
                               className="border hover:border-red-200"
-                            />
+                            /> */}
                           </div>
                         </div>
-                        
                       </div>
                     </div>
                   </div>
-                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:px-6"></div>
-
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => {setShowModal(false);
-                    setBuyValidate(false)}}
-                    ref={cancelButtonRef}
-                  >
-                    Cancel
-                  </button>
+                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:px-6 justify-end">
+                    {" "}
+                    <button
+                      type="button"
+                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                      onClick={() => {
+                        setShowModal(false);
+                        setBuyValidate(false);
+                      }}
+                      ref={cancelButtonRef}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
@@ -304,72 +327,101 @@ const SellBuy = () => {
                           <h1>SELL DCP</h1>
                         </Dialog.Title>
                         <hr />
-                       <form onSubmit={handleSell}>
-                         <div className="mt-4 text-xl">
-                         <div className="max-w-md px-2">
-                        <p className="text-left break-words ">In order to make a sale of DCP
-You need to first make the sale from your wallet, and get a collection key
-Make sure that the sale has been received, and that the key is present in overview.cash
-and then enter here the collection key and the identification of the BTC wallet to which you wish to receive the payment
-Please note that beneficiaries should only be set for the wallet ID: ccd67f48-ea77-4038-9c40-2305898a7e68<br/><span>('beneficiaries_sha': '4bc9fb333319bad3b65d797506b4b556420784c77ea48ec4bee1a889727638ff')
-</span><br/>
-Minimum to transfer 1 DCP, each sale involves a commission of 1 DCP + 5% of the remaining</p>
+                        <form onSubmit={handleSell}>
+                          <div className="mt-4 text-xl">
+                            <div className="max-w-md px-2">
+                              <p className="text-left break-words ">
+                                In order to make a sale of DCP You need to first
+                                make the sale from your wallet, and get a
+                                collection key Make sure that the sale has been
+                                received, and that the key is present in
+                                overview.cash and then enter here the collection
+                                key and the identification of the BTC wallet to
+                                which you wish to receive the payment Please
+                                note that beneficiaries should only be set for
+                                the wallet ID:
+                                ccd67f48-ea77-4038-9c40-2305898a7e68
+                                <br />
+                                <span>
+                                  ('beneficiaries_sha':
+                                  '4bc9fb333319bad3b65d797506b4b556420784c77ea48ec4bee1a889727638ff')
+                                </span>
+                                <br />
+                                Minimum to transfer 1 DCP, each sale involves a
+                                commission of 1 DCP + 5% of the remaining
+                              </p>
+                            </div>
+                            <div className="flex justify-center my-2">
+                              {/* <label htmlFor="">COLLECTION_KEY:</label> */}
+                              <textarea
+                              
+                                rows={4}
+                                type="text"
+                                value={sell_collection_key}
+                                placeholder="Here is Collection Key"
+                                className="border hover:border-red-200 border-none"
+                                // onChange={(e)=>{setSellCollectionKey(e.target.value)}
+                              />
+                            </div>
+                            <div className="flex justify-center my-2 gap-4">
+                              {/* <label htmlFor="">BTC_ID:</label> */}
+                              <input
+                                value={sell_btc_id}
+                                type="text"
+                                placeholder="recipient_btc_wallet_id"
+                                className="border hover:border-red-200"
+                                onChange={(e) => {
+                                  setSellBtcId(e.target.value);
+                                }}
+                              />
+                            </div>
+
+                            <div className="flex justify-center">
+                              {sell_validate && (
+                                <p className="text-sm text-red-500">
+                                  Field must be Filled
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex justify-end my-2 w-50">
+                              <button
+                                type="submit"
+                                className=" w-full rounded-md border border-transparent bg-blue-600 px-10 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                              >
+                                <p className="text-xl">Make the sale</p>
+                              </button>
+
+                              <button
+                                type="button"
+                                className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                                onClick={() => {
+                                  setShowSellModal(false);
+                                  setSellValidate(false);
+                                }}
+                                ref={cancelButtonRef}
+                              >
+                                Cancel
+                              </button>
+                            </div>
                           </div>
-                         <div className="flex justify-center my-2">
-                            {/* <label htmlFor="">COLLECTION_KEY:</label> */}
-                            <input
-                              type="text"
-                              value={sell_collection_key}
-                              placeholder="collection_key"
-                              className="border hover:border-red-200"
-                              onChange={(e)=>{setSellCollectionKey(e.target.value)}}
-                            />
-                          </div>
-                          <div className="flex justify-center my-2 gap-4">
-                            {/* <label htmlFor="">BTC_ID:</label> */}
-                            <input
-                            value={sell_btc_id}
-                              type="text"
-                              placeholder="recipient_btc_wallet_id"
-                              className="border hover:border-red-200"
-                              onChange={(e)=>{setSellBtcId(e.target.value)}}
-                            />
-                          </div>
-                         
-                          <div className="flex justify-center">
-                            {sell_validate&&(<p className="text-sm text-red-500">Field must be Filled</p>)}
-                          </div>
-                          <div className="flex justify-center my-2 w-50">
-                            <button
-                              type="submit"
-                              className=" w-full rounded-md border border-transparent bg-blue-600 px-10 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                            
-                            >
-                              <p className="text-xl">Make the sale</p>
-                            </button>
-                          </div>
-                        </div>
-                       </form>
+                        </form>
                         <div className="mt-4 text-xl">
                           <div className="flex justify-between my-2 gap-4">
                             <p>{sellStatus}</p>
+                          </div>
                         </div>
-                        </div>
-                        
                       </div>
                     </div>
                   </div>
-                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:px-6"></div>
-
-                  <button
+                  {/* <div className="bg-gray-50 px-4 py-3 sm:flex sm:px-6 justify-end"> <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => {setShowSellModal(false);
-                    }}
+                    setSellValidate(false)}}
                     ref={cancelButtonRef}
                   >
                     Cancel
-                  </button>
+                  </button></div> */}
                 </Dialog.Panel>
               </Transition.Child>
             </div>
